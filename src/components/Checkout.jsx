@@ -58,7 +58,7 @@ function Checkout(props) {
     // Create PaymentIntent as soon as the page loads
     useEffect(() => {
         window
-          .fetch("https://deco-repair-plan.herokuapp.com/create-payment-intent", {
+          .fetch("https://salty-escarpment-52908.herokuapp.com/https://deco-repair-plan.herokuapp.com/create-payment-intent", {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
