@@ -18,7 +18,7 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe(`${process.env.REACT_APP_PUBLISHABLE_KEY}`);
+const stripePromise = loadStripe("pk_test_51IEnXcCKorqkOjaTrfxaxji3bAqy5PZZur0r1hpsP3ueUL0FvGkofaa8Ddk6sOqy4xVRwExv32XEsqyTTRLIdDMh00z3FKCygY");
 
 const App = () => {
     return (
