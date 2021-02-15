@@ -1117,7 +1117,16 @@ h1 {
   }
 
   .result-box {
-    font-size: 14px;
+    font-size: 12px;
+  }
+
+  .result-labels {
+    width: 35%;
+    text-align: left;
+  }
+
+  .result-data {
+    width: 65%;
   }
 
   .payment-container {
