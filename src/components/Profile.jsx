@@ -105,7 +105,7 @@ function Profile(props) {
                 <div className="profile-headings-box">
                     <p className="profile-headings-field">Date</p>
                     <p className="profile-headings-field">User</p>
-                    <p className="profile-headings-field">Repair Items</p>
+                    <p className="profile-headings-field">Repairs</p>
                     <p className="profile-headings-field">License</p>
                 </div>
                 {serviceRepairList.map(createField)}

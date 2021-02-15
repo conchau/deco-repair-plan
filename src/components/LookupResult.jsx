@@ -45,9 +45,9 @@ function LookupResult(props) {
             <div className="lookup-headings-box">
                 <p className="lookup-headings-field">Details</p>
                 <p className="lookup-headings-field">Name</p>
-                <p className="lookup-headings-field">License Plate</p>
-                <p className="lookup-headings-field optional">Vehicle Info</p>
-                <p className="lookup-headings-field optional">Plan Type</p>
+                <p className="lookup-headings-field">License</p>
+                <p className="lookup-headings-field optional">Vehicle</p>
+                <p className="lookup-headings-field optional">Plan</p>
             </div>
             {customerList.map(createField)}
         </div>
