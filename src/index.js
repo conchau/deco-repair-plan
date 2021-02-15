@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route } from "react-router-dom";
 import App from "./components/App";
+import ScrollToTop from "./components/ScrollToTop";
 import { createStore } from "redux";
 import allReducers from "./reducers";
 import {Provider} from "react-redux";
@@ -18,6 +19,7 @@ const store = createStore(
 ReactDOM.render((
   <BrowserRouter>
     <Provider store={store}>
+        <ScrollToTop />
         <Route path="/" component={App} />
     </Provider>
   </BrowserRouter>

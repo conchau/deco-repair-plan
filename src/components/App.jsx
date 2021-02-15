@@ -32,9 +32,7 @@ const App = () => {
                     timeout={450}
                     classNames="fade"
                 >
-
                     <Switch location={location}>
-
                         <Route exact path="/" component={Option}></Route>
                         <Route exact path="/option" component={Option}></Route>
                         <Route exact path="/lookup" component={Lookup}></Route>
