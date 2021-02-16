@@ -47,7 +47,8 @@ function Profile(props) {
     useEffect(()=> {
         axiosConfig.get("/invoice", {
             params: {
-                foundEmail
+                foundEmail,
+                foundLicense
             }
             })
             .then(response => {

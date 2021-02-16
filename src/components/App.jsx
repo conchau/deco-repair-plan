@@ -12,6 +12,7 @@ import Profile from "./Profile";
 import Service from "./Service";
 import ServiceConfirmed from "./ServiceConfirmed";
 import Checkout from "./Checkout";
+import CheckoutService from "./CheckoutService";
 import CheckoutConfirmed from "./CheckoutConfirmed";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
@@ -43,6 +44,7 @@ const App = () => {
                         <Route exact path="/checkoutconfirmed" component={CheckoutConfirmed}></Route>
                         <Route exact path="/payment" component={Payment}></Route>
                         <Route exact path="/checkout" component={Checkout}></Route>
+                        <Route exact path="/checkoutservice" component={CheckoutService}></Route>
                     </Switch>
                 </CSSTransition>
             </TransitionGroup>

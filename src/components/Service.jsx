@@ -36,6 +36,29 @@ function Service(props) {
     const additional3 = useSelector(state => state.additional3);
     const additional4 = useSelector(state => state.additional4);
 
+    function checkTaxRate() {
+        if (foundProvince === "AB"){
+            setTaxes(0.05);
+        } else if (foundProvince === "BC"){
+            setTaxes(0.12);
+        } else if (foundProvince === "MB"){
+            setTaxes(0.12);
+        } else if (foundProvince === "ON"){
+            setTaxes(0.13);
+        } else if (foundProvince === "SK"){
+            setTaxes(0.11);
+        } else if (foundProvince === "YT"){
+            setTaxes(0.05);
+        }
+    }
+
+    //PRICE STATES
+    const [taxes, setTaxes] = useState(0);
+    const repairPlanFee = ({additional1}.additional1 + {additional2}.additional2 +{additional3}.additional3 + {additional4}.additional4);
+    const preDiscountSubtotal = ({additional1}.additional1 + {additional2}.additional2 +{additional3}.additional3 + {additional4}.additional4);
+    const subtotal = ({additional1}.additional1 + {additional2}.additional2 +{additional3}.additional3 + {additional4}.additional4);
+    const totalPrice = ((subtotal) * (1 + taxes)).toFixed(2);
+
     const [customerNameInput1, setCustomerNameInput1] = useState("");
     const [licensePlateInput1, setLicensePlateInput1] = useState("");
     const [vehicleInfoInput1, setVehicleInfoInput1] = useState("");
@@ -385,6 +408,7 @@ function Service(props) {
 
     function handleDraw() {
         setDrawStatus(true);
+        checkTaxRate();
     }
 
     function resetCanvas() {
@@ -417,76 +441,101 @@ function Service(props) {
         }
 
         //If necessary, add additional customers to database
-        if (customerNameInput1 !== ""){
-            axiosConfig.post("/customer/insert", {
-              province: foundProvince,
-              fullName: customerNameInput1,
-              licensePlate: licensePlateInput1,
-              vehicleInfo: vehicleInfoInput1,
-              planType: additionalPlanType1,
-              phoneNumber: foundPhone,
-              email: foundEmail
+        if (customerNameInput1 !== "" || customerNameInput2 !== "" || customerNameInput3 !== "" || customerNameInput4 !== ""){
+            history.push({
+                pathname: "/checkoutservice",
+                state: {
+                    userID: userIDInput,
+                    province: foundProvince,
+                    fullName: foundName,
+                    licensePlate: foundLicense,
+                    vehicleInfo: foundVehicle,
+                    phoneNumber: foundPhone,
+                    planType: foundPlan,
+                    basicCount: basicCount,
+                    premiumCount: premiumCount,
+                    serviceRepair: 1,
+                    repairItems: items.toString(),
+                    subtotalBeforeDiscount: preDiscountSubtotal,
+                    taxes: (totalPrice - subtotal),
+                    total: totalPrice,
+                    customerName1: customerNameInput1,
+                    licensePlate1: licensePlateInput1,
+                    vehicleInfo1: vehicleInfoInput1,
+                    additionalPlanType1: additionalPlanType1,
+                    customerName2: customerNameInput2,
+                    licensePlate2: licensePlateInput2,
+                    vehicleInfo2: vehicleInfoInput2,
+                    additionalPlanType2: additionalPlanType2,
+                    customerName3: customerNameInput3,
+                    licensePlate3: licensePlateInput3,
+                    vehicleInfo3: vehicleInfoInput3,
+                    additionalPlanType3: additionalPlanType3,
+                    customerName4: customerNameInput4,
+                    licensePlate4: licensePlateInput4,
+                    vehicleInfo4: vehicleInfoInput4,
+                    additionalPlanType4: additionalPlanType4
+                }
             });
-          }
-
-        if (customerNameInput2 !== ""){
-            axiosConfig.post("/customer/insert", {
+          } else if (customerNameInput1 === "" && customerNameInput2 === "" && customerNameInput3 === "" && customerNameInput4 === ""){
+            //Add invoice to database
+                axiosConfig.post("/invoice/insert", {
+                userID: userIDInput,
                 province: foundProvince,
-                fullName: customerNameInput2,
-                licensePlate: licensePlateInput2,
-                vehicleInfo: vehicleInfoInput2,
-                planType: additionalPlanType2,
+                planType: foundPlan,
+                basicCount: basicCount,
+                premiumCount: premiumCount,
+                serviceRepair: 1,
+                repairItems: items.toString(),
+                subtotalBeforeDiscount: 0,
+                discount: 0,
+                taxes: 0,
+                total: 0,
+                fullName: foundName,
+                licensePlate: foundLicense,
+                vehicleInfo: foundVehicle,
                 phoneNumber: foundPhone,
                 email: foundEmail
-            });
-        }
+            }).then((response) => {
+                console.log(response.data.errno);
+            }).then(history.push("/serviceconfirmed"));
+            }
 
-        if (customerNameInput3 !== ""){
-            axiosConfig.post("/customer/insert", {
-              province: foundProvince,
-              fullName: customerNameInput3,
-              licensePlate: licensePlateInput3,
-              vehicleInfo: vehicleInfoInput3,
-              planType: additionalPlanType3,
-              phoneNumber: foundPhone,
-              email: foundEmail
-            });
-        }
+        // if (customerNameInput2 !== ""){
+        //     axiosConfig.post("/customer/insert", {
+        //         province: foundProvince,
+        //         fullName: customerNameInput2,
+        //         licensePlate: licensePlateInput2,
+        //         vehicleInfo: vehicleInfoInput2,
+        //         planType: additionalPlanType2,
+        //         phoneNumber: foundPhone,
+        //         email: foundEmail
+        //     });
+        // }
 
-        if (customerNameInput4 !== ""){
-            axiosConfig.post("/customer/insert", {
-              province: foundProvince,
-              fullName: customerNameInput4,
-              licensePlate: licensePlateInput4,
-              vehicleInfo: vehicleInfoInput4,
-              planType: additionalPlanType4,
-              phoneNumber: foundPhone,
-              email: foundEmail
-            });
-        }
+        // if (customerNameInput3 !== ""){
+        //     axiosConfig.post("/customer/insert", {
+        //       province: foundProvince,
+        //       fullName: customerNameInput3,
+        //       licensePlate: licensePlateInput3,
+        //       vehicleInfo: vehicleInfoInput3,
+        //       planType: additionalPlanType3,
+        //       phoneNumber: foundPhone,
+        //       email: foundEmail
+        //     });
+        // }
 
-
-        //Add invoice to database
-        axiosConfig.post("/invoice/insert", {
-            userID: userIDInput,
-            province: foundProvince,
-            planType: foundPlan,
-            basicCount: basicCount,
-            premiumCount: premiumCount,
-            serviceRepair: 1,
-            repairItems: items.toString(),
-            subtotalBeforeDiscount: 0,
-            discount: 0,
-            taxes: 0,
-            total: 0,
-            fullName: foundName,
-            licensePlate: foundLicense,
-            vehicleInfo: foundVehicle,
-            phoneNumber: foundPhone,
-            email: foundEmail
-        }).then((response) => {
-            console.log(response.data.errno);
-        }).then(history.push("/serviceconfirmed"));
+        // if (customerNameInput4 !== ""){
+        //     axiosConfig.post("/customer/insert", {
+        //       province: foundProvince,
+        //       fullName: customerNameInput4,
+        //       licensePlate: licensePlateInput4,
+        //       vehicleInfo: vehicleInfoInput4,
+        //       planType: additionalPlanType4,
+        //       phoneNumber: foundPhone,
+        //       email: foundEmail
+        //     });
+        // }
     }
 
     function handleBackButton() {
@@ -709,7 +758,7 @@ function Service(props) {
                             onMouseOver={handleMouseOver}
                             onMouseOut={handleMouseOut}
                             onClick={handleGo}
-                        >DONE
+                        >GO
                         </button>
                     )}
                 </div>
